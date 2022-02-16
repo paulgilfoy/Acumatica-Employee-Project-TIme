@@ -23,20 +23,20 @@ namespace PX.Objects.EP
   {
     #region Event Handlers
 
-    // Adding an Action to Start / Stop Timer
-    // public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop Timer;
+    public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
   
-    // [PXButton(CommitChanges = true)]
-    // [PXUIField(DisplayName = "Stop Timer")]
-    // protected void stop Timer()
-    // {
-    //   EPActivityApprove row = EPActivityApprove.Row;
-    //   if (row == null)
-    //   return;
-    //   if 
+    [PXButton(CommitChanges = true)]
+    [PXUIField(DisplayName = "Stop Timer")]
+    protected void stop_Timer(PXCache sender, PXRowSelectedEventArgs e)
+    {
+      EPActivityApprove row = (EPActivityApprove)e.Row;
+//      TimeSpan t = (TimeSpan)(row.Date - DateTime.Now);
+//      row.TimeSpent = (int) t.TotalMinutes;
+      return;
 
-    // }
+    }
 
+  
 
     protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
     {
@@ -52,33 +52,33 @@ namespace PX.Objects.EP
     }
 
 
-    protected virtual void EPActivityApprove_TimeSpent_FieldUpdated(PXCache cache, PXFieldUpdatedEventArgs e)
-		{
-			EPActivityApprove row = (EPActivityApprove)e.Row;
-			if (row == null)
-				return;
-			if (PMTimeActivityExt.UsrEndTime != null && row.Date < DateTime.Parse(PMTimeActivityExt.UsrEndTime))
-        {
-          row.TimeSpent = DateTime.Parse(PMTimeActivityExt.UsrEndTime) - row.Date;
-        }
-      else
-				row.TimeBillable = GetTimeBillable(row, (int?)e.OldValue);
-		}
+//    protected virtual void EPActivityApprove_TimeSpent_FieldUpdated(PXCache cache, PXFieldUpdatedEventArgs e)
+//    {
+//      EPActivityApprove row = (EPActivityApprove)e.Row;
+//      if (row == null)
+//        return;
+//      if (row.UsrEndTime_Date != null && row.Date < DateTime.Parse(row.UsrEndTime_Time))
+//        {
+//          row.TimeSpent = DateTime.Parse(row.UsrEndTime) - row.Date;
+//        }
+//      else
+//        row.TimeBillable = GetTimeBillable(row, (int?)e.OldValue);
+//    }
     
     protected virtual int? GetTimeBillable(EPActivityApprove row, int? OldTimeSpent)
-		{
-			if (row.TimeCardCD == null && row.Billed != true)
-			{
-				if (row.IsBillable != true)
-					return 0;
-				else if ((OldTimeSpent ?? 0) == 0 || OldTimeSpent == row.TimeBillable)
-					return row.TimeSpent;
-				else
-					return row.TimeBillable;
-			}
-			else
-				return row.TimeBillable;
-		}
+    {
+      if (row.TimeCardCD == null && row.Billed != true)
+      {
+        if (row.IsBillable != true)
+          return 0;
+        else if ((OldTimeSpent ?? 0) == 0 || OldTimeSpent == row.TimeBillable)
+          return row.TimeSpent;
+        else
+          return row.TimeBillable;
+      }
+      else
+        return row.TimeBillable;
+    }
 
     #endregion
   }
