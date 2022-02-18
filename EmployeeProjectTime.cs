@@ -15,27 +15,29 @@ using PX.TM;
 using OwnedFilter = PX.Objects.CR.OwnedFilter;
 using PX.Api;
 using PX.Objects;
-using PX.Objects.EP;
 
 namespace PX.Objects.EP
 {
   public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
   {
     #region Event Handlers
-
     public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
-  
     [PXButton(CommitChanges = true)]
     [PXUIField(DisplayName = "Stop Timer")]
-    protected void stop_Timer(PXCache sender, PXRowSelectedEventArgs e)
-    {
-      EPActivityApprove row = (EPActivityApprove)e.Row;
-//      TimeSpan t = (TimeSpan)(row.Date - DateTime.Now);
-//      row.TimeSpent = (int) t.TotalMinutes;
-      return;
-
-    }
-
+    public virtual void _(Events.RowSelected<EmployeeActivitiesEntry.EmployeeActivitiesEntry> e)
+      {
+        EPActivityApprove row = (EPActivityApprove)e.Row;
+        //TimeSpan t = (TimeSpan)(row.Date - DateTime.Now);
+        //int i = (int) t.TotalMinutes;
+        //PX.Objects.CR.PMTimeActivityExt.usrEndTime myObj = new PX.Objects.CR.PMTimeActivityExt.usrEndTime
+        //{set : (int?) t.TotalMinutes};
+        PX.Objects.CR.PMTimeActivityExt myObj = new PX.Objects.CR.PMTimeActivityExt();
+        myObj.UsrEndTime = DateTime.Now;
+        //if (row == null)
+        // return;
+        //if (row != null)
+          
+       }
   
 
     protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
@@ -64,21 +66,7 @@ namespace PX.Objects.EP
 //      else
 //        row.TimeBillable = GetTimeBillable(row, (int?)e.OldValue);
 //    }
-    
-    protected virtual int? GetTimeBillable(EPActivityApprove row, int? OldTimeSpent)
-    {
-      if (row.TimeCardCD == null && row.Billed != true)
-      {
-        if (row.IsBillable != true)
-          return 0;
-        else if ((OldTimeSpent ?? 0) == 0 || OldTimeSpent == row.TimeBillable)
-          return row.TimeSpent;
-        else
-          return row.TimeBillable;
-      }
-      else
-        return row.TimeBillable;
-    }
+
 
     #endregion
   }
