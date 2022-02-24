@@ -18,56 +18,63 @@ using PX.Objects;
 
 namespace PX.Objects.EP
 {
-  public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
-  {
-    #region Event Handlers
-    public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
-    [PXButton(CommitChanges = true)]
-    [PXUIField(DisplayName = "Stop Timer")]
-    public virtual void _(Events.RowSelected<EmployeeActivitiesEntry.EmployeeActivitiesEntry> e)
-      {
-        EPActivityApprove row = (EPActivityApprove)e.Row;
-        //TimeSpan t = (TimeSpan)(row.Date - DateTime.Now);
-        //int i = (int) t.TotalMinutes;
-        //PX.Objects.CR.PMTimeActivityExt.usrEndTime myObj = new PX.Objects.CR.PMTimeActivityExt.usrEndTime
-        //{set : (int?) t.TotalMinutes};
-        PX.Objects.CR.PMTimeActivityExt myObj = new PX.Objects.CR.PMTimeActivityExt();
-        myObj.UsrEndTime = DateTime.Now;
-        //if (row == null)
-        // return;
-        //if (row != null)
-          
-       }
-  
-
-    protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+    public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
     {
-        EPActivityApprove row = (EPActivityApprove)e.Row;
-        if (row == null)
+        #region Event Handlers
+
+        //public SelectFrom<EPActivityApprove>
+        //            .InnerJoin<PMTask>
+        //                .On<EPActivityApprove.projectTaskID.IsEqual<PMTask.taskID>>
+        //            .LeftJoin<PMTimeActivity>
+        //                .On<EPActivityApprove.origNoteID.IsEqual<PMTimeActivity.noteID>>
+        //            .Where<EPActivityApprove.ownerID.IsEqual<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID.FromCurrent>>
+        //            .View Activity;    
+
+        public PXSelectJoin<EPActivityApprove,
+                    InnerJoin<PMTask,
+                            On<PMTask.taskID, Equal<EPActivityApprove.projectTaskID>>,
+                    LeftJoin<PMTimeActivity,
+                            On<PMTimeActivity.noteID, Equal<EPActivityApprove.origNoteID>>>>,
+                    Where<EPActivityApprove.ownerID, Equal<Current<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
+                            And<EPActivityApprove.trackTime, Equal<True>>>> Activity;
+
+
+        public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
+
+        [PXButton]
+        [PXUIField(DisplayName = "Stop Timer")]
+        protected void stop_Timer()
         {
-            row.Date = DateTime.Now;
+            EPActivityApprove row = Activity.Current;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            var k = DateTime.Now;
+            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrEndTime>(row, k);
+            Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+            //row.UsrEndTime = DateTime.Now;
+            //row.Update(Activity);
+            if (pMTimeActivityExt.UsrEndTime != null && row.Date < pMTimeActivityExt.UsrEndTime)
+            {
+                TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrEndTime - row.Date);
+                row.TimeSpent = (int)t.TotalMinutes;
+            }
+            else
+                return;
         }
-        else
+
+
+        protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
-            row.Date = DateTime.Now;
+            EPActivityApprove row = (EPActivityApprove)e.Row;
+            if (row == null)
+            {
+                row.Date = DateTime.Now;
+            }
+            else
+            {
+                row.Date = DateTime.Now;
+            }
         }
+
+        #endregion
     }
-
-
-//    protected virtual void EPActivityApprove_TimeSpent_FieldUpdated(PXCache cache, PXFieldUpdatedEventArgs e)
-//    {
-//      EPActivityApprove row = (EPActivityApprove)e.Row;
-//      if (row == null)
-//        return;
-//      if (row.UsrEndTime_Date != null && row.Date < DateTime.Parse(row.UsrEndTime_Time))
-//        {
-//          row.TimeSpent = DateTime.Parse(row.UsrEndTime) - row.Date;
-//        }
-//      else
-//        row.TimeBillable = GetTimeBillable(row, (int?)e.OldValue);
-//    }
-
-
-    #endregion
-  }
 }
