@@ -114,6 +114,19 @@ namespace PX.Objects.EP
 
         }
 
+        protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        {
+            EPActivityApprove row = (EPActivityApprove)e.Row;
+            if (row == null)
+            {
+                row.Date = DateTime.Now;
+            }
+            else
+            {
+                row.Date = DateTime.Now;
+            }
+        }
+
         #endregion
     }
 }
