@@ -20,25 +20,6 @@ namespace PX.Objects.EP
 {
     public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
     {
-        // #region Select
-
-        // //public SelectFrom<EPActivityApprove>
-        // //            .InnerJoin<PMTask>
-        // //                .On<EPActivityApprove.projectTaskID.IsEqual<PMTask.taskID>>
-        // //            .LeftJoin<PMTimeActivity>
-        // //                .On<EPActivityApprove.origNoteID.IsEqual<PMTimeActivity.noteID>>
-        // //            .Where<EPActivityApprove.ownerID.IsEqual<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID.FromCurrent>>
-        // //            .View Activity;    
-
-        // public PXSelectJoin<EPActivityApprove,
-        //             InnerJoin<PMTask,
-        //                     On<PMTask.taskID, Equal<EPActivityApprove.projectTaskID>>,
-        //             LeftJoin<PMTimeActivity,
-        //                     On<PMTimeActivity.noteID, Equal<EPActivityApprove.origNoteID>>>>,
-        //             Where<EPActivityApprove.ownerID, Equal<Current<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
-        //                     And<EPActivityApprove.trackTime, Equal<True>>>> Activity;
-        // #endregion
-
         #region Actions
 
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
@@ -82,6 +63,7 @@ namespace PX.Objects.EP
             row.Hold = false;
             Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
             Base.Caches[typeof(EPActivityApprove)].Update(row);
+            Base.Save.Press();
             
         }
 
@@ -133,22 +115,5 @@ namespace PX.Objects.EP
         }
 
         #endregion
-
-        // #region Fields
-
-        // protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
-        // {
-        //     EPActivityApprove row = (EPActivityApprove)e.Row;
-        //     if (row == null)
-        //     {
-        //         row.Date = DateTime.Now;
-        //     }
-        //     else
-        //     {
-        //         row.Date = DateTime.Now;
-        //     }
-        // }
-
-        // #endregion
     }
 }
