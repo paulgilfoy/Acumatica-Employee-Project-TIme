@@ -20,61 +20,135 @@ namespace PX.Objects.EP
 {
     public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
     {
-        #region Event Handlers
+        // #region Select
 
-        //public SelectFrom<EPActivityApprove>
-        //            .InnerJoin<PMTask>
-        //                .On<EPActivityApprove.projectTaskID.IsEqual<PMTask.taskID>>
-        //            .LeftJoin<PMTimeActivity>
-        //                .On<EPActivityApprove.origNoteID.IsEqual<PMTimeActivity.noteID>>
-        //            .Where<EPActivityApprove.ownerID.IsEqual<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID.FromCurrent>>
-        //            .View Activity;    
+        // //public SelectFrom<EPActivityApprove>
+        // //            .InnerJoin<PMTask>
+        // //                .On<EPActivityApprove.projectTaskID.IsEqual<PMTask.taskID>>
+        // //            .LeftJoin<PMTimeActivity>
+        // //                .On<EPActivityApprove.origNoteID.IsEqual<PMTimeActivity.noteID>>
+        // //            .Where<EPActivityApprove.ownerID.IsEqual<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID.FromCurrent>>
+        // //            .View Activity;    
 
-        public PXSelectJoin<EPActivityApprove,
-                    InnerJoin<PMTask,
-                            On<PMTask.taskID, Equal<EPActivityApprove.projectTaskID>>,
-                    LeftJoin<PMTimeActivity,
-                            On<PMTimeActivity.noteID, Equal<EPActivityApprove.origNoteID>>>>,
-                    Where<EPActivityApprove.ownerID, Equal<Current<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
-                            And<EPActivityApprove.trackTime, Equal<True>>>> Activity;
+        // public PXSelectJoin<EPActivityApprove,
+        //             InnerJoin<PMTask,
+        //                     On<PMTask.taskID, Equal<EPActivityApprove.projectTaskID>>,
+        //             LeftJoin<PMTimeActivity,
+        //                     On<PMTimeActivity.noteID, Equal<EPActivityApprove.origNoteID>>>>,
+        //             Where<EPActivityApprove.ownerID, Equal<Current<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
+        //                     And<EPActivityApprove.trackTime, Equal<True>>>> Activity;
+        // #endregion
 
+        #region Actions
 
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
 
         [PXButton]
-        [PXUIField(DisplayName = "Stop Timer")]
+        [PXUIField(DisplayName = "Stop")]
         protected void stop_Timer()
         {
-            EPActivityApprove row = Activity.Current;
+            EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             var k = DateTime.Now;
-            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrEndTime>(row, k);
-            Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
-            //row.UsrEndTime = DateTime.Now;
-            //row.Update(Activity);
-            if (pMTimeActivityExt.UsrEndTime != null && row.Date < pMTimeActivityExt.UsrEndTime)
+            if (row.ApprovalStatus != "OP")
             {
-                TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrEndTime - row.Date);
-                row.TimeSpent = (int)t.TotalMinutes;
+                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
             }
-            else
-                return;
+            else if (row.ApprovalStatus == "OP")
+            {
+                if (pMTimeActivityExt.UsrPGIsPaused == false)
+                {
+                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                    Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                    if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
+                        {
+                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                            pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
+                        }
+                    else
+                        return;
+                    row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
+                }   
+                else if (pMTimeActivityExt.UsrPGIsPaused == true)
+                {
+                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
+                }
+
+            }
+
+            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
+            row.IsBillable = true;
+            row.TimeBillable = row.TimeSpent;
+            row.Hold = false;
+            Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+            Base.Caches[typeof(EPActivityApprove)].Update(row);
+            
         }
 
 
-        protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+
+        public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Pause_Timer;
+
+        [PXButton]
+        [PXUIField(DisplayName = "Pause/Play")]
+        protected void pause_Timer()
         {
-            EPActivityApprove row = (EPActivityApprove)e.Row;
-            if (row == null)
+            EPActivityApprove row = Base.Activity.Current;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            var k = DateTime.Now;
+            if (row.ApprovalStatus != "OP")
             {
-                row.Date = DateTime.Now;
+                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
             }
-            else
+            else if (row.ApprovalStatus == "OP")
             {
-                row.Date = DateTime.Now;
+                Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, null);
+                if (pMTimeActivityExt.UsrPGIsPaused == false)
+                    {
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                        if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
+                            {
+                                TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                                pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
+                            }
+                        else
+                            return;
+                        row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, true);
+                    }   
+                else if (pMTimeActivityExt.UsrPGIsPaused == true)
+                    {
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressStartTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, null);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressTimeSpent>(row, null);
+                        
+                        
+                    }
+                Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                Base.Caches[typeof(EPActivityApprove)].Update(row);                
             }
+
         }
 
         #endregion
+
+        // #region Fields
+
+        // protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        // {
+        //     EPActivityApprove row = (EPActivityApprove)e.Row;
+        //     if (row == null)
+        //     {
+        //         row.Date = DateTime.Now;
+        //     }
+        //     else
+        //     {
+        //         row.Date = DateTime.Now;
+        //     }
+        // }
+
+        // #endregion
     }
 }

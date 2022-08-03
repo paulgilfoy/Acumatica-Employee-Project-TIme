@@ -1,0 +1,280 @@
+<Customization level="" description="Adjusting Logic of Employee Time Activity" product-version="21.211">
+    <Page path="~/pages/ep/ep307000.aspx" pageSource="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">
+        <PXGridLevel DataMember="Activity" ParentId="phG_grid_Levels#0" TypeFullName="PX.Web.UI.PXGridLevel">
+            <Children Key="Columns">
+                <AddItem>
+                    <PXGridColumn TypeFullName="PX.Web.UI.PXGridColumn">
+                        <Prop Key="DataField" Value="UsrPGEndDate" />
+                        <Prop Key="Width" Value="90" />
+                    </PXGridColumn>
+                </AddItem>
+                <AddItem>
+                    <PXGridColumn TypeFullName="PX.Web.UI.PXGridColumn">
+                        <Prop Key="DataField" Value="UsrPGIsPaused" />
+                        <Prop Key="Width" Value="60" />
+                    </PXGridColumn>
+                </AddItem>
+                <AddItem>
+                    <PXGridColumn TypeFullName="PX.Web.UI.PXGridColumn">
+                        <Prop Key="DataField" Value="UsrPGProgressStartTime_Time" />
+                        <Prop Key="Width" Value="90" />
+                    </PXGridColumn>
+                </AddItem>
+                <AddItem>
+                    <PXGridColumn TypeFullName="PX.Web.UI.PXGridColumn">
+                        <Prop Key="DataField" Value="UsrPGProgressEndTime_Time" />
+                        <Prop Key="Width" Value="90" />
+                    </PXGridColumn>
+                </AddItem>
+                <AddItem>
+                    <PXGridColumn TypeFullName="PX.Web.UI.PXGridColumn">
+                        <Prop Key="DataField" Value="UsrPGProgressTimeSpent" />
+                        <Prop Key="Width" Value="70" />
+                    </PXGridColumn>
+                </AddItem>
+            </Children>
+        </PXGridLevel>
+        <PXGridColumn DataField="AppointmentCustomerID" ParentId="phG_grid_Levels#0_Columns#17" TypeFullName="PX.Web.UI.PXGridColumn">
+            <Prop Key="Visible" Value="True" />
+        </PXGridColumn>
+        <PXDataSource ID="ds" ParentId="phDS_ds" TypeFullName="PX.Web.UI.PXDataSource">
+            <Children Key="CallbackCommands">
+                <AddItem>
+                    <PXDSCallbackCommand TypeFullName="PX.Web.UI.PXDSCallbackCommand">
+                        <Prop Key="Name" Value="pause_Timer" />
+                        <Prop Key="DependOnGrid" Value="Grid" />
+                        <Prop Key="CommitChanges" Value="False" />
+                    </PXDSCallbackCommand>
+                </AddItem>
+                <AddItem>
+                    <PXDSCallbackCommand TypeFullName="PX.Web.UI.PXDSCallbackCommand">
+                        <Prop Key="Name" Value="stop_Timer" />
+                        <Prop Key="DependOnGrid" Value="grid" />
+                        <Prop Key="CommitChanges" Value="True" />
+                    </PXDSCallbackCommand>
+                </AddItem>
+            </Children>
+        </PXDataSource>
+    </Page>
+    <Graph ClassName="EmployeeActivitiesEntry" Source="#CDATA" IsNew="True" FileType="ExistingGraph">
+        <CDATA name="Source"><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using PX.Common;
+using PX.Data.EP;
+using PX.Objects.CR;
+using PX.Objects.CS;
+using PX.Objects.CT;
+using PX.Objects.IN;
+using PX.Objects.PM;
+using PX.SM;
+using PX.Data;
+using PX.TM;
+using OwnedFilter = PX.Objects.CR.OwnedFilter;
+using PX.Api;
+using PX.Objects;
+
+namespace PX.Objects.EP
+{
+    public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
+    {
+        // #region Select
+
+        // //public SelectFrom<EPActivityApprove>
+        // //            .InnerJoin<PMTask>
+        // //                .On<EPActivityApprove.projectTaskID.IsEqual<PMTask.taskID>>
+        // //            .LeftJoin<PMTimeActivity>
+        // //                .On<EPActivityApprove.origNoteID.IsEqual<PMTimeActivity.noteID>>
+        // //            .Where<EPActivityApprove.ownerID.IsEqual<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID.FromCurrent>>
+        // //            .View Activity;    
+
+        // public PXSelectJoin<EPActivityApprove,
+        //             InnerJoin<PMTask,
+        //                     On<PMTask.taskID, Equal<EPActivityApprove.projectTaskID>>,
+        //             LeftJoin<PMTimeActivity,
+        //                     On<PMTimeActivity.noteID, Equal<EPActivityApprove.origNoteID>>>>,
+        //             Where<EPActivityApprove.ownerID, Equal<Current<EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
+        //                     And<EPActivityApprove.trackTime, Equal<True>>>> Activity;
+        // #endregion
+
+        #region Actions
+
+        public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
+
+        [PXButton]
+        [PXUIField(DisplayName = "Stop")]
+        protected void stop_Timer()
+        {
+            EPActivityApprove row = Base.Activity.Current;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            var k = DateTime.Now;
+            if (row.ApprovalStatus != "OP")
+            {
+                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
+            }
+            else if (row.ApprovalStatus == "OP")
+            {
+                if (pMTimeActivityExt.UsrPGIsPaused == false)
+                {
+                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                    Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                    if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
+                        {
+                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                            pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
+                        }
+                    else
+                        return;
+                    row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
+                }   
+                else if (pMTimeActivityExt.UsrPGIsPaused == true)
+                {
+                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
+                }
+
+            }
+
+            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
+            row.IsBillable = true;
+            row.TimeBillable = row.TimeSpent;
+            row.Hold = false;
+            Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+            Base.Caches[typeof(EPActivityApprove)].Update(row);
+            
+        }
+
+
+
+        public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Pause_Timer;
+
+        [PXButton]
+        [PXUIField(DisplayName = "Pause/Play")]
+        protected void pause_Timer()
+        {
+            EPActivityApprove row = Base.Activity.Current;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            var k = DateTime.Now;
+            if (row.ApprovalStatus != "OP")
+            {
+                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
+            }
+            else if (row.ApprovalStatus == "OP")
+            {
+                Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, null);
+                if (pMTimeActivityExt.UsrPGIsPaused == false)
+                    {
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                        if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
+                            {
+                                TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                                pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
+                            }
+                        else
+                            return;
+                        row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, true);
+                    }   
+                else if (pMTimeActivityExt.UsrPGIsPaused == true)
+                    {
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressStartTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, null);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressTimeSpent>(row, null);
+                        
+                        
+                    }
+                Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
+                Base.Caches[typeof(EPActivityApprove)].Update(row);                
+            }
+
+        }
+
+        #endregion
+
+        // #region Fields
+
+        // protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        // {
+        //     EPActivityApprove row = (EPActivityApprove)e.Row;
+        //     if (row == null)
+        //     {
+        //         row.Date = DateTime.Now;
+        //     }
+        //     else
+        //     {
+        //         row.Date = DateTime.Now;
+        //     }
+        // }
+
+        // #endregion
+    }
+}]]></CDATA>
+    </Graph>
+    <Table TableName="PMTimeActivity">
+        <Column TableName="PMTimeActivity" ColumnName="UsrPGIsPaused" ColumnType="bool" AllowNull="True" MaxLength="25" DecimalPrecision="2" IsNewColumn="True" IsUnicode="True" />
+        <Column TableName="PMTimeActivity" ColumnName="UsrPGEndDate" ColumnType="date" AllowNull="True" MaxLength="25" DecimalPrecision="2" IsNewColumn="True" IsUnicode="True" />
+        <Column TableName="PMTimeActivity" ColumnName="UsrPGProgressStartTime" ColumnType="date" AllowNull="True" MaxLength="25" DecimalPrecision="2" IsNewColumn="True" IsUnicode="True" />
+        <Column TableName="PMTimeActivity" ColumnName="UsrPGProgressEndTime" ColumnType="date" AllowNull="True" MaxLength="25" DecimalPrecision="2" IsNewColumn="True" IsUnicode="True" />
+        <Column TableName="PMTimeActivity" ColumnName="UsrPGProgressTimeSpent" ColumnType="int" AllowNull="True" MaxLength="25" DecimalPrecision="2" IsNewColumn="True" IsUnicode="True" />
+    </Table>
+    <DAC type="PX.Objects.CR.OwnedFilter">
+        <Field FieldName="ProjectID" TypeName="int" TextAttributes="#CDATA" OverrideClassName="PX.Objects.EP.EmployeeActivitiesEntry+PMTimeActivityFilter" StorageName="ExistingColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXCustomizeSelectorColumns(
+typeof(PX.Objects.PM.PMProject.contractCD),
+typeof(PX.Objects.PM.PMProject.description),
+typeof(PX.Objects.PM.PMProject.customerID),
+typeof(PX.Objects.PM.PMProject.customerID_Customer_acctName),
+typeof(PX.Objects.PM.PMProject.status))]]]></CDATA>
+        </Field>
+    </DAC>
+    <DAC type="PX.Objects.CR.PMTimeActivity">
+        <Field FieldName="ProjectID" TypeName="int" TextAttributes="#CDATA" OverrideClassName="PX.Objects.EP.EPActivityApprove" StorageName="ExistingColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXCustomizeSelectorColumns(
+typeof(PX.Objects.PM.PMProject.contractCD),
+typeof(PX.Objects.PM.PMProject.description),
+typeof(PX.Objects.PM.PMProject.customerID),
+typeof(PX.Objects.PM.PMProject.customerID_Customer_acctName),
+typeof(PX.Objects.PM.PMProject.status))]]]></CDATA>
+        </Field>
+        <Field FieldName="UsrPGIsPaused" TypeName="bool" MapDbTable="PMTimeActivity" TextAttributes="#CDATA" StorageName="AddColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBBool]
+[PXUIField(DisplayName="Paused")]
+[PXDefault(false)]]]></CDATA>
+        </Field>
+        <Field FieldName="UsrPGEndDate" TypeName="date" MapDbTable="PMTimeActivity" TextAttributes="#CDATA" StorageName="AddColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBDate]
+[PXUIField(DisplayName="End Date")]]]></CDATA>
+        </Field>
+        <Field FieldName="UsrPGProgressStartTime" TypeName="date" MapDbTable="PMTimeActivity" TextAttributes="#CDATA" StorageName="AddColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBDateAndTime(DisplayNameDate = "Progress Start Date", DisplayNameTime = "Progress Start Time", UseTimeZone = true)]
+[PXUIField(DisplayName="Progress Start")]
+[PXDefault(typeof(AccessInfo.businessDate))]]]></CDATA>
+        </Field>
+        <Field FieldName="UsrPGProgressEndTime" TypeName="date" MapDbTable="PMTimeActivity" TextAttributes="#CDATA" StorageName="AddColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBDateAndTime(DisplayNameDate = "Progress End Date", DisplayNameTime = "Progress End Time", UseTimeZone = true)]
+[PXUIField(DisplayName="Progress End")]]]></CDATA>
+        </Field>
+        <Field FieldName="UsrPGProgressTimeSpent" TypeName="int" MapDbTable="PMTimeActivity" TextAttributes="#CDATA" StorageName="AddColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBInt]
+[PXUIField(DisplayName="Progress Time Spent")]
+]]></CDATA>
+        </Field>
+        <Field FieldName="IsBillable" TypeName="bool" TextAttributes="#CDATA" OverrideGeneratedAttributes="True" OverrideClassName="PX.Objects.CR.PMTimeActivity" StorageName="ExistingColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBBool]
+[PXUIField(DisplayName = "Billable", FieldClass = "BILLABLE")]
+[PXDefault(false, PersistingCheck = PXPersistingCheck.Nothing)]]]></CDATA>
+        </Field>
+        <Field FieldName="Date" TypeName="date" TextAttributes="#CDATA" OverrideGeneratedAttributes="True" OverrideClassName="PX.Objects.EP.EPActivityApprove" StorageName="ExistingColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBDateAndTime(DisplayNameDate = "Date", DisplayNameTime = "Time", UseTimeZone = true)]
+[PXUIField(DisplayName = "Date")]
+[PXDefault(typeof(AccessInfo.businessDate))]]]></CDATA>
+        </Field>
+        <Field FieldName="Date" TypeName="date" TextAttributes="#CDATA" OverrideGeneratedAttributes="True" OverrideClassName="PX.Objects.CR.PMTimeActivity" StorageName="ExistingColumn">
+            <CDATA name="TextAttributes"><![CDATA[[PXDBDateAndTime(DisplayNameDate = "Date", DisplayNameTime = "Time", UseTimeZone = true)]
+[PXUIField(DisplayName = "Date")]
+[PXDefault(typeof(AccessInfo.businessDate))]]]></CDATA>
+        </Field>
+    </DAC>
+</Customization>
