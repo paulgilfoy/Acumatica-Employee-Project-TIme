@@ -20,6 +20,35 @@ namespace PX.Objects.EP
 {
     public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
     {
+
+    protected void EPActivityApprove_UsrPGProgressStartTime_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+    {
+            EPActivityApprove row = (EPActivityApprove)e.Row;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            var k = DateTime.Now;
+            if (row == null)
+            {
+                e.NewValue = DateTime.Now;
+            }
+            else
+            {
+                e.NewValue = DateTime.Now;
+            }
+      
+    }
+        protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        {
+            EPActivityApprove row = (EPActivityApprove)e.Row;
+            if (row == null)
+            {
+                row.Date = DateTime.Now;
+            }
+            else
+            {
+                row.Date = DateTime.Now;
+            }
+        }
+    
         #region Actions
 
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
@@ -114,18 +143,34 @@ namespace PX.Objects.EP
 
         }
 
-        protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
-        {
-            EPActivityApprove row = (EPActivityApprove)e.Row;
-            if (row == null)
-            {
-                row.Date = DateTime.Now;
-            }
-            else
-            {
-                row.Date = DateTime.Now;
-            }
-        }
+        // protected virtual void PMTimeActivityExt_UsrPGProgressStartTime_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        // {
+        //     EPActivityApprove row = (EPActivityApprove)e.Row;
+        //     PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+        //     if (row == null)
+        //     {
+        //         pMTimeActivityExt.UsrPGProgressStartTime = DateTime.Now;
+        //     }
+        //     else
+        //     {
+        //         pMTimeActivityExt.UsrPGProgressStartTime = DateTime.Now;
+        //     }
+        // }
+
+        // protected void EPActivityApprove_UsrPGProgressStartTime_Time_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        // {
+        //     EPActivityApprove row = (EPActivityApprove)e.Row;
+        //     PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+        //     var k = DateTime.Now;
+        //     if (row == null)
+        //     {
+        //         row.UsrPGProgressStartTime = DateTime.Now;
+        //     }
+        //     else
+        //     {
+        //         row.UsrPGProgressStartTime = DateTime.Now;
+        //     }
+        // }
 
         #endregion
     }
