@@ -36,6 +36,23 @@ namespace PX.Objects.EP
             }
       
         }
+
+        protected void EPActivityApprove_UsrPGClockStatus_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
+        {
+        
+            EPActivityApprove row = (EPActivityApprove)e.Row;
+            PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
+            if (row == null)
+            {
+                e.NewValue = string? 'A';
+            }
+            else
+            {
+                e.NewValue = string? 'A';
+            }
+        
+        }
+
         protected virtual void EPActivityApprove_Date_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
             EPActivityApprove row = (EPActivityApprove)e.Row;
@@ -48,6 +65,8 @@ namespace PX.Objects.EP
                 row.Date = DateTime.Now;
             }
         }
+
+
     
         #region Actions
 
@@ -146,3 +165,5 @@ namespace PX.Objects.EP
         #endregion
     }
 }
+
+[PXStringList(new string[] {"A", "P", "C"}, new string[] {"Active", "Paused", "Complete"})]
