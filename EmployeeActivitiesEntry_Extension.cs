@@ -44,11 +44,11 @@ namespace PX.Objects.EP
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             if (row == null)
             {
-                e.NewValue = string? 'A';
+                e.NewValue = "A";
             }
             else
             {
-                e.NewValue = string? 'A';
+                e.NewValue = "A";
             }
         
         }
@@ -106,6 +106,7 @@ namespace PX.Objects.EP
             }
 
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
+            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "C");
             row.IsBillable = true;
             row.TimeBillable = row.TimeSpent;
             row.Hold = false;
@@ -146,10 +147,12 @@ namespace PX.Objects.EP
                             return;
                         row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, true);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "P");
                     }   
                 else if (pMTimeActivityExt.UsrPGIsPaused == true)
                     {
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "A");
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressStartTime>(row, k);
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, null);
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressTimeSpent>(row, null);
@@ -165,5 +168,3 @@ namespace PX.Objects.EP
         #endregion
     }
 }
-
-[PXStringList(new string[] {"A", "P", "C"}, new string[] {"Active", "Paused", "Complete"})]
