@@ -79,9 +79,9 @@ namespace PX.Objects.EP
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             var k = DateTime.Now;
-            if (row.ApprovalStatus != "OP")
+            if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
-                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
+                throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
             }
             else if (row.ApprovalStatus == "OP")
             {
@@ -127,9 +127,9 @@ namespace PX.Objects.EP
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             var k = DateTime.Now;
-            if (row.ApprovalStatus != "OP")
+            if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
-                throw new PXException("Row selected is not valid. Row.Status = " + (string)row.ApprovalStatus);
+                                throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
             }
             else if (row.ApprovalStatus == "OP")
             {
