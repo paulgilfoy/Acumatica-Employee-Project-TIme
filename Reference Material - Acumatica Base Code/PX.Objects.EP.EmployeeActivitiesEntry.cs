@@ -62,6 +62,9 @@ public class EmployeeActivitiesEntry : PXGraph<EmployeeActivitiesEntry>
 			{
 				PXUIFieldAttribute.SetVisible(Activity.Cache, typeof(EPActivityApprove.projectTaskID).Name, false);
 				PXUIFieldAttribute.SetVisible<PMTimeActivityFilter.projectTaskID>(Filter.Cache, null, false);
+				///
+				/// Can we add Labor item here?  
+				///
 				PXUIFieldAttribute.SetVisible<PMTimeActivityFilter.includeReject>(Filter.Cache, null, false);
 				PXUIFieldAttribute.SetVisible<EPActivityApprove.approvalStatus>(Activity.Cache, null, false);
 				PXUIFieldAttribute.SetVisible<EPActivityApprove.approverID>(Activity.Cache, null, false);
