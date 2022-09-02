@@ -20,6 +20,106 @@ namespace PX.Objects.EP
 {
     public class EmployeeActivitiesEntry_Extension : PXGraphExtension<EmployeeActivitiesEntry>
     {
+        //Adding the Filter object for work in IEnumerable activity()
+        public PXFilter<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Filter;
+
+        #region Event Handler
+        //Copy and pasted IEnumerable activity() from base, adding if clause for   OwnedFilterExt.UsrPGDate   filter
+		protected virtual IEnumerable activity()
+		{
+
+			List<object> args = new List<object>();
+			PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter filterRow = Filter.Current;
+            OwnedFilterExt ownedFilterExt = PXCache<OwnedFilter>.GetExtension<OwnedFilterExt>(filterRow);
+            
+			if (filterRow == null)
+				return null;
+
+			BqlCommand cmd;
+			cmd = BqlCommand.CreateInstance(typeof(Select2<
+				EPActivityApprove,
+				LeftJoin<EPEarningType, 
+					On<EPEarningType.typeCD, Equal<EPActivityApprove.earningTypeID>>,
+				LeftJoin<CRActivityLink, 
+					On<CRActivityLink.noteID, Equal<EPActivityApprove.refNoteID>>,
+				LeftJoin<CRCase, 
+					On<CRCase.noteID, Equal<CRActivityLink.refNoteID>>,
+				LeftJoin<ContractEx, 
+					On<CRCase.contractID, Equal<ContractEx.contractID>>>>>>,
+				Where
+					<EPActivityApprove.ownerID, Equal<Current<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.ownerID>>,
+					And<EPActivityApprove.trackTime, Equal<True>,
+                    And<EPActivityApprove.isCorrected, Equal<False>>>>,
+				OrderBy<Desc<EPActivityApprove.date>>>));
+
+
+			if (filterRow.ProjectID != null)
+				cmd = cmd.WhereAnd<Where<EPActivityApprove.projectID, Equal<Current<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.projectID>>>>();
+
+			if (filterRow.ProjectTaskID != null)
+				cmd = cmd.WhereAnd<Where<EPActivityApprove.projectTaskID, Equal<Current<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.projectTaskID>>>>();
+
+            if (ownedFilterExt.UsrPGDate != null)
+            {
+                throw new PXException(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nOwnedFilterExt.UsrPGDate = {0} \n EPActivityApprove.Date = {1}", ownedFilterExt.UsrPGDate, Base.Activity.Current.Date));
+                cmd = cmd.WhereAnd<Where<EPActivityApprove.date, Equal<Current<OwnedFilterExt.usrPGDate>>>>();
+                args.Add(ownedFilterExt.UsrPGDate);
+            }
+
+
+			if (filterRow.FromWeek != null || filterRow.TillWeek != null)
+			{
+				List<Type> cmdList = new List<Type>();
+
+				if (filterRow.IncludeReject == true)
+				{
+					cmdList.Add(typeof(Where<,,>));
+					cmdList.Add(typeof(EPActivityApprove.approvalStatus));
+					cmdList.Add(typeof(Equal<CR.ActivityStatusListAttribute.rejected>));
+					cmdList.Add(typeof(Or<>));
+				}
+
+				if (filterRow.FromWeek != null)
+				{
+					if (filterRow.TillWeek != null)
+						cmdList.Add(typeof(Where<,,>));
+					else
+						cmdList.Add(typeof(Where<,>));
+					cmdList.Add(typeof(EPActivityApprove.weekID));
+					cmdList.Add(typeof(GreaterEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>>));
+					args.Add(filterRow.FromWeek);
+					if (filterRow.TillWeek != null)
+						cmdList.Add(typeof(And<>));
+				}
+
+				if (filterRow.TillWeek != null)
+				{
+					cmdList.Add(typeof(Where<EPActivityApprove.weekID, LessEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.tillWeek>>>));
+					args.Add(filterRow.TillWeek);
+				}
+
+				cmd = cmd.WhereAnd(BqlCommand.Compose(cmdList.ToArray()));
+			}
+            
+            // if (ownedFilterExt.UsrPGDate != null)
+            // {
+            //     List<Type> pgcmdList = new List<Type>();
+            //     pgcmdList.Add(typeof(Where<EPActivityApprove.date, Equal<Current<OwnedFilterExt.usrPGDate>>>));
+            //     args.Add(ownedFilterExt.UsrPGDate);
+            //     cmd = cmd.WhereAnd(BqlCommand.Compose(pgcmdList.ToArray()));
+            // }
+
+			if (filterRow.NoteID != null)
+			{
+				cmd = cmd.WhereAnd<Where<EPActivityApprove.noteID, Equal<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.noteID>>>>();
+				args.Add(filterRow.NoteID);
+			}
+
+			PXView view = new PXView(Base, false, cmd);
+			return view.SelectMultiBound(new object[] { Filter.Current }, args.ToArray());
+		}
+
+        
 
         protected void EPActivityApprove_UsrPGProgressStartTime_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
@@ -66,10 +166,13 @@ namespace PX.Objects.EP
             }
         }
 
+        #endregion
 
     
         #region Actions
 
+        //Punch-in Punch-out time tracking  section
+        
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
 
         [PXButton]
@@ -160,7 +263,8 @@ namespace PX.Objects.EP
                         
                     }
                 Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
-                Base.Caches[typeof(EPActivityApprove)].Update(row);                
+                Base.Caches[typeof(EPActivityApprove)].Update(row);      
+                Base.Save.Press();          
             }
 
         }
