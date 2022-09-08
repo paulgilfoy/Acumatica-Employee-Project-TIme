@@ -61,9 +61,8 @@ namespace PX.Objects.EP
 
             if (ownedFilterExt.UsrPGDate != null)
             {
-                throw new PXException(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nOwnedFilterExt.UsrPGDate = {0} \n EPActivityApprove.Date = {1}", ownedFilterExt.UsrPGDate, Base.Activity.Current.Date));
+                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nOwnedFilterExt.UsrPGDate = {0} \n DateTime.Now.Date = {1}", ownedFilterExt.UsrPGDate, DateTime.Now.Date));
                 cmd = cmd.WhereAnd<Where<EPActivityApprove.date, Equal<Current<OwnedFilterExt.usrPGDate>>>>();
-                args.Add(ownedFilterExt.UsrPGDate);
             }
 
 
@@ -100,14 +99,6 @@ namespace PX.Objects.EP
 
 				cmd = cmd.WhereAnd(BqlCommand.Compose(cmdList.ToArray()));
 			}
-            
-            // if (ownedFilterExt.UsrPGDate != null)
-            // {
-            //     List<Type> pgcmdList = new List<Type>();
-            //     pgcmdList.Add(typeof(Where<EPActivityApprove.date, Equal<Current<OwnedFilterExt.usrPGDate>>>));
-            //     args.Add(ownedFilterExt.UsrPGDate);
-            //     cmd = cmd.WhereAnd(BqlCommand.Compose(pgcmdList.ToArray()));
-            // }
 
 			if (filterRow.NoteID != null)
 			{
@@ -128,11 +119,11 @@ namespace PX.Objects.EP
             var k = DateTime.Now;
             if (row == null)
             {
-                e.NewValue = DateTime.Now;
+                e.NewValue = PX.Common.PXTimeZoneInfo.Now;
             }
             else
             {
-                e.NewValue = DateTime.Now;
+                e.NewValue = PX.Common.PXTimeZoneInfo.Now;
             }
       
         }
@@ -158,11 +149,13 @@ namespace PX.Objects.EP
             EPActivityApprove row = (EPActivityApprove)e.Row;
             if (row == null)
             {
-                row.Date = DateTime.Now;
+                row.Date = PX.Common.PXTimeZoneInfo.Now.Date;
+                //row.Date = PX.Data.PXGraph.Current<AccessInfo.businessDate>;
             }
             else
             {
-                row.Date = DateTime.Now;
+                row.Date = PX.Common.PXTimeZoneInfo.Now.Date;
+                //row.Date = AccessInfo.BusinessDate;
             }
         }
 
@@ -181,7 +174,7 @@ namespace PX.Objects.EP
         {
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
-            var k = DateTime.Now;
+            var k = PX.Common.PXTimeZoneInfo.Now;
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
                 throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
@@ -210,8 +203,10 @@ namespace PX.Objects.EP
 
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "C");
-            row.IsBillable = true;
-            row.TimeBillable = row.TimeSpent;
+            if (row.ProjectTaskID == null) {row.IsBillable = false;}
+            else if (row.ProjectTaskID != null) 
+            {row.IsBillable = true;
+            row.TimeBillable = row.TimeSpent;}
             row.Hold = false;
             Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
             Base.Caches[typeof(EPActivityApprove)].Update(row);
@@ -229,10 +224,10 @@ namespace PX.Objects.EP
         {
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
-            var k = DateTime.Now;
+            var k = PX.Common.PXTimeZoneInfo.Now;
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
-                                throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
+                throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
             }
             else if (row.ApprovalStatus == "OP")
             {
