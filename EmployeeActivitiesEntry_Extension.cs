@@ -59,10 +59,16 @@ namespace PX.Objects.EP
 			if (filterRow.ProjectTaskID != null)
 				cmd = cmd.WhereAnd<Where<EPActivityApprove.projectTaskID, Equal<Current<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.projectTaskID>>>>();
 
-            if (ownedFilterExt.UsrPGDate != null)
+            if (ownedFilterExt.UsrPGFromDate != null)
             {
-                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nOwnedFilterExt.UsrPGDate = {0} \n DateTime.Now.Date = {1}", ownedFilterExt.UsrPGDate, DateTime.Now.Date));
-                cmd = cmd.WhereAnd<Where<EPActivityApprove.date, Equal<Current<OwnedFilterExt.usrPGDate>>>>();
+                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGFromDate = {0} \n DateTime.Now.Date = {1}", ownedFilterExt.UsrPGFromDate, DateTime.Now.Date));
+                cmd = cmd.WhereAnd<Where<EPActivityApprove.date, GreaterEqual<Current<OwnedFilterExt.usrPGFromDate>>>>();
+            }
+
+            if (ownedFilterExt.UsrPGTillDate != null)
+            {
+                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGTillDate = {0} \n PX.Common.PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGTillDate, PX.Common.PXTimeZoneInfo.Now.Date));
+                cmd = cmd.WhereAnd<Where<EPActivityApprove.date, LessEqual<Current<OwnedFilterExt.usrPGTillDate>>>>();
             }
 
 
