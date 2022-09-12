@@ -61,50 +61,50 @@ namespace PX.Objects.EP
 
             if (ownedFilterExt.UsrPGFromDate != null)
             {
-                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGFromDate = {0} \n DateTime.Now.Date = {1}", ownedFilterExt.UsrPGFromDate, DateTime.Now.Date));
+                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGFromDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGFromDate, PX.Common.PXTimeZoneInfo.Now.Date));
                 cmd = cmd.WhereAnd<Where<EPActivityApprove.date, GreaterEqual<Current<OwnedFilterExt.usrPGFromDate>>>>();
             }
 
             if (ownedFilterExt.UsrPGTillDate != null)
             {
-                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGTillDate = {0} \n PX.Common.PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGTillDate, PX.Common.PXTimeZoneInfo.Now.Date));
+                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGTillDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGTillDate, PX.Common.PXTimeZoneInfo.Now.Date));
                 cmd = cmd.WhereAnd<Where<EPActivityApprove.date, LessEqual<Current<OwnedFilterExt.usrPGTillDate>>>>();
             }
 
 
-			if (filterRow.FromWeek != null || filterRow.TillWeek != null)
-			{
-				List<Type> cmdList = new List<Type>();
+			// if (filterRow.FromWeek != null || filterRow.TillWeek != null)
+			// {
+			// 	List<Type> cmdList = new List<Type>();
 
-				if (filterRow.IncludeReject == true)
-				{
-					cmdList.Add(typeof(Where<,,>));
-					cmdList.Add(typeof(EPActivityApprove.approvalStatus));
-					cmdList.Add(typeof(Equal<CR.ActivityStatusListAttribute.rejected>));
-					cmdList.Add(typeof(Or<>));
-				}
+			// 	if (filterRow.IncludeReject == true)
+			// 	{
+			// 		cmdList.Add(typeof(Where<,,>));
+			// 		cmdList.Add(typeof(EPActivityApprove.approvalStatus));
+			// 		cmdList.Add(typeof(Equal<CR.ActivityStatusListAttribute.rejected>));
+			// 		cmdList.Add(typeof(Or<>));
+			// 	}
 
-				if (filterRow.FromWeek != null)
-				{
-					if (filterRow.TillWeek != null)
-						cmdList.Add(typeof(Where<,,>));
-					else
-						cmdList.Add(typeof(Where<,>));
-					cmdList.Add(typeof(EPActivityApprove.weekID));
-					cmdList.Add(typeof(GreaterEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>>));
-					args.Add(filterRow.FromWeek);
-					if (filterRow.TillWeek != null)
-						cmdList.Add(typeof(And<>));
-				}
+			// 	if (filterRow.FromWeek != null)
+			// 	{
+			// 		if (filterRow.TillWeek != null)
+			// 			cmdList.Add(typeof(Where<,,>));
+			// 		else
+			// 			cmdList.Add(typeof(Where<,>));
+			// 		cmdList.Add(typeof(EPActivityApprove.weekID));
+			// 		cmdList.Add(typeof(GreaterEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>>));
+			// 		args.Add(filterRow.FromWeek);
+			// 		if (filterRow.TillWeek != null)
+			// 			cmdList.Add(typeof(And<>));
+			// 	}
 
-				if (filterRow.TillWeek != null)
-				{
-					cmdList.Add(typeof(Where<EPActivityApprove.weekID, LessEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.tillWeek>>>));
-					args.Add(filterRow.TillWeek);
-				}
+			// 	if (filterRow.TillWeek != null)
+			// 	{
+			// 		cmdList.Add(typeof(Where<EPActivityApprove.weekID, LessEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.tillWeek>>>));
+			// 		args.Add(filterRow.TillWeek);
+			// 	}
 
-				cmd = cmd.WhereAnd(BqlCommand.Compose(cmdList.ToArray()));
-			}
+			// 	cmd = cmd.WhereAnd(BqlCommand.Compose(cmdList.ToArray()));
+			// }
 
 			if (filterRow.NoteID != null)
 			{
