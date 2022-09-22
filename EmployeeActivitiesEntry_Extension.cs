@@ -165,6 +165,31 @@ namespace PX.Objects.EP
             }
         }
 
+        protected virtual void PMTimeActivityFilter_FromWeek_FieldDefaulting(PXCache sender, PXFieldDefaultingEventArgs e)
+		{
+			try
+			{
+				e.NewValue = PXWeekSelector2Attribute.GetWeekID(this, null);
+			}
+			catch (PXException exception)
+			{
+				sender.RaiseExceptionHandling<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>(e.Row, null, exception);
+			}
+
+		}
+
+		protected virtual void PMTimeActivityFilter_TillWeek_FieldDefaulting(PXCache sender, PXFieldDefaultingEventArgs e)
+		{
+			try
+			{
+				e.NewValue = null;
+			}
+			catch (PXException exception)
+			{
+				sender.RaiseExceptionHandling<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>(e.Row, null, exception);
+			}
+		}
+
         #endregion
 
     
