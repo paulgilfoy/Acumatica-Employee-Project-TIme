@@ -61,13 +61,13 @@ namespace PX.Objects.EP
 
             if (ownedFilterExt.UsrPGFromDate != null)
             {
-                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGFromDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGFromDate, PX.Common.PXTimeZoneInfo.Now.Date));
+                //PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGFromDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGFromDate, PX.Common.PXTimeZoneInfo.Now.Date));
                 cmd = cmd.WhereAnd<Where<EPActivityApprove.date, GreaterEqual<Current<OwnedFilterExt.usrPGFromDate>>>>();
             }
 
             if (ownedFilterExt.UsrPGTillDate != null)
             {
-                PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGTillDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGTillDate, PX.Common.PXTimeZoneInfo.Now.Date));
+                //PX.Data.PXTrace.WriteInformation(String.Format("Hello Paul. Please see the below contents. PS - You got this! Every place you set your foot, I have given you!    \nUsrPGTillDate = {0} \n PXTimeZoneInfo.Now.Date = {1}", ownedFilterExt.UsrPGTillDate, PX.Common.PXTimeZoneInfo.Now.Date));
                 cmd = cmd.WhereAnd<Where<EPActivityApprove.date, LessEqual<Current<OwnedFilterExt.usrPGTillDate>>>>();
             }
 
