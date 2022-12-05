@@ -211,9 +211,8 @@ namespace PX.Objects.EP
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "C");
             //Below is a test to see if the row (time entry) is NON Billable
-            //Three (3) tests. (1) If the Project Task ID is blank. (2) If the Project ID is "2023-FIRM-FIRM.001". Or (3) If the Labor Item is "NonBill" 
-            if (row.ProjectTaskID == null || row.ProjectID == 5425 || row.LabourItemID == 10892) {row.IsBillable = false;}
-            //if (row.ProjectTaskID == null || row.ProjectID == "2023FIRM        FIRM.001") {row.IsBillable = false;}
+            //Two (2) tests. (1) If the Project Task ID is blank. Or (3) If the Labor Item is "NonBill" 
+            if (row.ProjectTaskID == null || row.LabourItemID == 10893) {row.IsBillable = false;}
             else if (row.ProjectTaskID != null)
             {row.IsBillable = true;
             row.TimeBillable = row.TimeSpent;}
