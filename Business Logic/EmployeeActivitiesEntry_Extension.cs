@@ -120,7 +120,6 @@ namespace PX.Objects.EP
         {
             EPActivityApprove row = (EPActivityApprove)e.Row;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
-            var k = DateTime.Now;
             if (row == null)
             {
                 e.NewValue = PX.Common.PXTimeZoneInfo.Now;
@@ -128,14 +127,13 @@ namespace PX.Objects.EP
             else
             {
                 e.NewValue = PX.Common.PXTimeZoneInfo.Now;
-            }
-        
+            }  
         }
+
         //setting the status of the time tracking clock. 
         //Options include A = Active, P = Paused, C = Completed
         protected void EPActivityApprove_UsrPGClockStatus_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
-        
             EPActivityApprove row = (EPActivityApprove)e.Row;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             if (row == null)
@@ -146,7 +144,6 @@ namespace PX.Objects.EP
             {
                 e.NewValue = "A";
             }
-        
         }
 
         //setting field defaulting to Dallas time zone. Now().
@@ -180,16 +177,19 @@ namespace PX.Objects.EP
         {
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
-            var k = PX.Common.PXTimeZoneInfo.Now;
+            var _currentTime = PX.Common.PXTimeZoneInfo.Now;
+            
+            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus) 
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
                 throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
             }
+
             else if (row.ApprovalStatus == "OP")
             {
                 if (pMTimeActivityExt.UsrPGIsPaused == false)
                 {
-                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                    Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, _currentTime);
                     Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
                     if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                         {
@@ -207,22 +207,22 @@ namespace PX.Objects.EP
                 }
 
             }
-
-            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, k);
+            Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, _currentTime);
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "C");
+            
             //Below is a test to see if the row (time entry) is NON Billable
             //Two (2) tests. (1) If the Project Task ID is blank. Or (3) If the Labor Item is "NonBill" 
             if (row.ProjectTaskID == null || row.LabourItemID == 10893) {row.IsBillable = false;}
             else if (row.ProjectTaskID != null)
             {row.IsBillable = true;
             row.TimeBillable = row.TimeSpent;}
+
+            //Take the Time entry off Hold and Save the Time entry.
             row.Hold = false;
             Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
             Base.Caches[typeof(EPActivityApprove)].Update(row);
             Base.Save.Press();
-            
         }
-
 
 
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Pause_Timer;
@@ -233,17 +233,20 @@ namespace PX.Objects.EP
         {
             EPActivityApprove row = Base.Activity.Current;
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
-            var k = PX.Common.PXTimeZoneInfo.Now;
+            var _currentTime = PX.Common.PXTimeZoneInfo.Now;
+
+            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus) 
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
                 throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
             }
+
             else if (row.ApprovalStatus == "OP")
             {
                 Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGEndDate>(row, null);
                 if (pMTimeActivityExt.UsrPGIsPaused == false)
                     {
-                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, _currentTime);
                         Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
                         if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                             {
@@ -251,7 +254,7 @@ namespace PX.Objects.EP
                                 pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
                             }
                         else
-                            {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 252"));
+                            {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 257"));
                             return;}
                         row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, true);
@@ -261,11 +264,9 @@ namespace PX.Objects.EP
                     {
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, false);
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "A");
-                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressStartTime>(row, k);
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressStartTime>(row, _currentTime);
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressEndTime>(row, null);
-                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressTimeSpent>(row, null);
-                        
-                        
+                        Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGProgressTimeSpent>(row, null);             
                     }
                 Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
                 Base.Caches[typeof(EPActivityApprove)].Update(row);      
@@ -273,7 +274,6 @@ namespace PX.Objects.EP
             }
 
         }
-
         #endregion
     }
 }
