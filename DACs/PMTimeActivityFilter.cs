@@ -9,7 +9,7 @@ typeof(PX.Objects.PM.PMProject.status))]
 #endregion
 
 
-//Below section is repated in CR.OwnedFilter
+//Below section is repeated in CR.OwnedFilter
 
 
 #UsrPGFromDate
