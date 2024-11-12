@@ -71,40 +71,6 @@ namespace PX.Objects.EP
                 }
 
 
-        // if (filterRow.FromWeek != null || filterRow.TillWeek != null)
-        // {
-        //   List<Type> cmdList = new List<Type>();
-
-        //   if (filterRow.IncludeReject == true)
-        //   {
-        //     cmdList.Add(typeof(Where<,,>));
-        //     cmdList.Add(typeof(EPActivityApprove.approvalStatus));
-        //     cmdList.Add(typeof(Equal<CR.ActivityStatusListAttribute.rejected>));
-        //     cmdList.Add(typeof(Or<>));
-        //   }
-
-        //   if (filterRow.FromWeek != null)
-        //   {
-        //     if (filterRow.TillWeek != null)
-        //       cmdList.Add(typeof(Where<,,>));
-        //     else
-        //       cmdList.Add(typeof(Where<,>));
-        //     cmdList.Add(typeof(EPActivityApprove.weekID));
-        //     cmdList.Add(typeof(GreaterEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.fromWeek>>));
-        //     args.Add(filterRow.FromWeek);
-        //     if (filterRow.TillWeek != null)
-        //       cmdList.Add(typeof(And<>));
-        //   }
-
-        //   if (filterRow.TillWeek != null)
-        //   {
-        //     cmdList.Add(typeof(Where<EPActivityApprove.weekID, LessEqual<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.tillWeek>>>));
-        //     args.Add(filterRow.TillWeek);
-        //   }
-
-        //   cmd = cmd.WhereAnd(BqlCommand.Compose(cmdList.ToArray()));
-        // }
-
         if (filterRow.NoteID != null)
         {
             cmd = cmd.WhereAnd<Where<EPActivityApprove.noteID, Equal<Required<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter.noteID>>>>();
@@ -115,7 +81,7 @@ namespace PX.Objects.EP
         return view.SelectMultiBound(new object[] { Filter.Current }, args.ToArray());
         }
 
-        //starting the time tracking clock 
+        //starting the time tracking clock
         protected void EPActivityApprove_UsrPGProgressStartTime_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
             EPActivityApprove row = (EPActivityApprove)e.Row;
@@ -130,7 +96,7 @@ namespace PX.Objects.EP
             }  
         }
 
-        //setting the status of the time tracking clock. 
+        //setting the status of the time tracking clock.
         //Options include A = Active, P = Paused, C = Completed
         protected void EPActivityApprove_UsrPGClockStatus_FieldDefaulting(PXCache cache, PXFieldDefaultingEventArgs e)
         {
@@ -167,7 +133,7 @@ namespace PX.Objects.EP
     
         #region Actions
 
-        //Actions for Punch-in / Punch-out time tracking 
+        //Actions for Punch-in / Punch-out time tracking
         
         public PXAction<PX.Objects.EP.EmployeeActivitiesEntry.PMTimeActivityFilter> Stop_Timer;
 
@@ -179,7 +145,7 @@ namespace PX.Objects.EP
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             var _currentTime = PX.Common.PXTimeZoneInfo.Now;
             
-            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus) 
+            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus)
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
                 throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
@@ -193,11 +159,14 @@ namespace PX.Objects.EP
                     Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
                     if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                         {
-                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime)
+                              if (t.TotalMinutes > 540)
+                                {throw new PXException(String.Format("Clock has been running for over 9 hours. Please fix manually."));
+                                return;}
                             pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
                         }
                     else
-                        {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 200"));
+                        {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 169"));
                         return;}
                     row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
                 }   
@@ -211,8 +180,8 @@ namespace PX.Objects.EP
             Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGClockStatus>(row, "C");
             
             //Below is a test to see if the row (time entry) is NON Billable
-            //Two (2) tests. (1) If the Project Task ID is blank. Or (3) If the Labor Item is "NonBill" 
-            if (row.ProjectTaskID == null || row.LabourItemID == 10893) {row.IsBillable = false;}
+            //Two (2) tests. (1) If the Project ID is 2023-Firm (8285). Or (3) If the Labor Item is "NonBill"
+            if (row.ProjectID == 8285 || row.LabourItemID == 10893) {row.IsBillable = false;}
             else if (row.ProjectTaskID != null)
             {row.IsBillable = true;
             row.TimeBillable = row.TimeSpent;}
@@ -235,7 +204,7 @@ namespace PX.Objects.EP
             PMTimeActivityExt pMTimeActivityExt = PXCache<PMTimeActivity>.GetExtension<PMTimeActivityExt>(row);
             var _currentTime = PX.Common.PXTimeZoneInfo.Now;
 
-            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus) 
+            //Tests if the Time Entry is Open (ApprovalStatus) or Complete (UsrPGClockStatus)
             if (row.ApprovalStatus != "OP" || pMTimeActivityExt.UsrPGClockStatus == "C")
             {
                 throw new PXException(String.Format("Row selected is not valid. \nRow.Status = {0} \nRow.UsrPGClockStatus = {1}", row.ApprovalStatus, pMTimeActivityExt.UsrPGClockStatus));
@@ -251,10 +220,13 @@ namespace PX.Objects.EP
                         if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                             {
                                 TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                                if (t.TotalMinutes > 540)
+                                {throw new PXException(String.Format("Clock has been running for over 9 hours. Please fix manually."));
+                                return;}
                                 pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
                             }
                         else
-                            {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 257"));
+                            {throw new PXException(String.Format("A unique error has occured. Please contact Paul or system Admin. Error at Line 229"));
                             return;}
                         row.TimeSpent = row.TimeSpent + pMTimeActivityExt.UsrPGProgressTimeSpent;
                         Base.Caches[typeof(PMTimeActivity)].SetValueExt<PMTimeActivityExt.usrPGIsPaused>(row, true);
