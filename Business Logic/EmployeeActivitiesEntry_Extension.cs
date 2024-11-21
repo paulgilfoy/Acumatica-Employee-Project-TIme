@@ -159,9 +159,9 @@ namespace PX.Objects.EP
                     Base.Caches[typeof(PMTimeActivity)].Update(pMTimeActivityExt);
                     if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                         {
-                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime)
-                              if (t.TotalMinutes > 540)
-                                {throw new PXException(String.Format("Clock has been running for over 9 hours. Please fix manually."));
+                            TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
+                            if (t.TotalMinutes > 720)
+                                {throw new PXException(String.Format("Clock has been running for over 12 hours. Please fix manually."));
                                 return;}
                             pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
                         }
@@ -220,8 +220,8 @@ namespace PX.Objects.EP
                         if (pMTimeActivityExt.UsrPGProgressEndTime != null && pMTimeActivityExt.UsrPGProgressStartTime < pMTimeActivityExt.UsrPGProgressEndTime)
                             {
                                 TimeSpan t = (TimeSpan)(pMTimeActivityExt.UsrPGProgressEndTime - pMTimeActivityExt.UsrPGProgressStartTime);
-                                if (t.TotalMinutes > 540)
-                                {throw new PXException(String.Format("Clock has been running for over 9 hours. Please fix manually."));
+                                if (t.TotalMinutes > 720)
+                                {throw new PXException(String.Format("Clock has been running for over 12 hours. Please fix manually."));
                                 return;}
                                 pMTimeActivityExt.UsrPGProgressTimeSpent = (int)t.TotalMinutes;
                             }
